@@ -1,0 +1,20 @@
+BorderPane center {
+    -fx-padding: 30 0;
+
+}
+
+VBox {
+    -fx-spacing: 15;
+}
+
+#centerBox {
+    -fx-padding: 50px;
+}
+
+TextFiled {
+    -fx-arc-width: 20;
+}
+
+TextFiled {
+
+}

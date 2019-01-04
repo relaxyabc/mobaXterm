@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.wanna.keygen.controller.MainController"
+            prefWidth="400" prefHeight="320">
+
+    <stylesheets>
+        <URL value="@../static/style.css"/>
+    </stylesheets>
+    <top>
+        <MenuBar>
+            <Menu text="菜单">
+                <MenuItem fx:id="help" text="帮助" onAction="#help"></MenuItem>
+            </Menu>
+        </MenuBar>
+
+    </top>
+    <center>
+        <VBox fx:id="centerBox">
+            <HBox alignment="BASELINE_CENTER" spacing="15">
+                <Label text="用户名"/>
+                <TextField fx:id="userName" promptText="wanna"></TextField>
+            </HBox>
+
+            <HBox alignment="BASELINE_CENTER" spacing="15">
+                <!--<Label text="版   本"/>-->
+                <Label text="版本号"/>
+                <TextField fx:id="targetVersion" promptText="11.0"></TextField>
+            </HBox>
+
+            <HBox alignment="BASELINE_CENTER" spacing="40">
+                <Label text="游戏"/>
+                <CheckBox fx:id="gameBox"></CheckBox>
+                <Label text="插件"/>
+                <CheckBox fx:id="pluginBox"></CheckBox>
+            </HBox>
+            <HBox alignment="BASELINE_CENTER" spacing="50">
+                <Button fx:id="register" prefWidth="50" onAction="#register">注册</Button>
+                <Button fx:id="openPath" prefWidth="50" onAction="#openPath">打开</Button>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <VBox spacing="10" style="-fx-padding: 15 20">
+            <Label text="使用说明:"/>
+            <Label text="1:输入用户名,版本,点击注册"/>
+            <Label text="2:复制 Custom.mxtpro 到 mobaxterm 安装目录即可;"/>
+            <Label text="  如 C:/Program Files (x86)/Mobatek/MobaXterm"/>
+            <HBox spacing="10">
+                <Label text="3:官方网址:"/>
+                <Hyperlink text="https://mobaxterm.mobatek.net/" onAction="#openHyperlink"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>
