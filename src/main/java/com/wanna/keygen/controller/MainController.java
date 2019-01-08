@@ -10,8 +10,9 @@ import com.wanna.keygen.util.VariantBase64;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,18 +62,6 @@ public class MainController {
         });
     }
 
-    /**
-     * help 点击说明
-     */
-    public void help() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("使用说明");
-        alert.setHeaderText(null);
-        Hyperlink link = new Hyperlink();
-        link.setText("");
-        alert.setContentText("见底部");
-        alert.showAndWait();
-    }
 
     private void checkVersionFormat() {
         String version = targetVersion.getText();
@@ -125,6 +114,8 @@ public class MainController {
         alert.setTitle("警告");
         alert.setHeaderText(null);
         alert.setContentText(content);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(("/static/logo.png")));
         return alert;
     }
 

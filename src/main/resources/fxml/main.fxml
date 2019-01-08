@@ -13,7 +13,6 @@
     <top>
         <MenuBar>
             <Menu text="菜单">
-                <MenuItem fx:id="help" text="帮助" onAction="#help"></MenuItem>
             </Menu>
         </MenuBar>
 
