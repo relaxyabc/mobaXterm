@@ -13,6 +13,8 @@
     <top>
         <MenuBar>
             <Menu text="菜单">
+                <MenuItem text="注册" onAction="#register"/>
+                <MenuItem text="打开" onAction="#openPath"/>
             </Menu>
         </MenuBar>
 
@@ -20,13 +22,18 @@
     <center>
         <VBox fx:id="centerBox">
             <HBox alignment="BASELINE_CENTER" spacing="15">
-                <Label text="用户名"/>
+                <Label text="用户名称"/>
                 <TextField fx:id="userName" promptText="wanna"></TextField>
             </HBox>
 
             <HBox alignment="BASELINE_CENTER" spacing="15">
+                <Label text="授权版本"/>
+                <ComboBox fx:id="licenseType" prefWidth="160"/>
+            </HBox>
+
+            <HBox alignment="BASELINE_CENTER" spacing="15">
                 <!--<Label text="版   本"/>-->
-                <Label text="版本号"/>
+                <Label text="目标版本"/>
                 <TextField fx:id="targetVersion" promptText="11.0"></TextField>
             </HBox>
 

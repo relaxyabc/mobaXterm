@@ -4,12 +4,15 @@ import com.sun.deploy.uitoolkit.impl.fx.HostServicesFactory;
 import com.sun.javafx.application.HostServicesDelegate;
 import com.wanna.keygen.App;
 import com.wanna.keygen.core.License;
+import com.wanna.keygen.core.LicenseType;
 import com.wanna.keygen.util.EncryptUtil;
 import com.wanna.keygen.util.KeyGenerate;
 import com.wanna.keygen.util.VariantBase64;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -38,6 +41,9 @@ public class MainController {
     private TextField userName;
 
     @FXML
+    private ComboBox<LicenseType> licenseType;
+
+    @FXML
     private TextField targetVersion;
 
     @FXML
@@ -55,11 +61,29 @@ public class MainController {
     }
 
     public void initialize() {
+        // 初始化 许可 类型
+        initLicenseType();
+        // 初始化 版本监听器
+        initVersionListener();
+    }
+
+    /**
+     * 初始化 版本监听器
+     */
+    private void initVersionListener() {
         targetVersion.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) {
                 checkVersionFormat();
             }
         });
+    }
+
+    /**
+     * 初始化许可类型
+     */
+    private void initLicenseType() {
+        licenseType.setItems(FXCollections.observableArrayList(LicenseType.values()));
+        licenseType.setValue(LicenseType.Professional);
     }
 
 
@@ -75,8 +99,7 @@ public class MainController {
      * 生成注册文件
      */
     public void register() {
-        boolean openGame = gameBox.isSelected();
-        boolean openPlugin = pluginBox.isSelected();
+
         String name = userName.getText();
         String version = targetVersion.getText();
         if (Objects.equals("", name.trim()) || Objects.equals("", version.trim())) {
@@ -84,9 +107,9 @@ public class MainController {
             alert.showAndWait();
             return;
         }
-        License license = new License(name, version);
-        license.setOpenGames(openGame);
-        license.setOpenPlugins(openPlugin);
+
+        // 封装成 license
+        License license = pakLicense(name, version);
 
         String licenseKey = license.getLicenseKey();
         String encryptBytes = EncryptUtil.encryptBytes(0x787, licenseKey.getBytes(StandardCharsets.UTF_8));
@@ -101,6 +124,25 @@ public class MainController {
                 alert.showAndWait();
             }
         });
+    }
+
+    /**
+     * package license
+     *
+     * @param userName userName
+     * @param version  version
+     * @return license
+     */
+    private License pakLicense(String userName, String version) {
+        LicenseType value = licenseType.getValue();
+        boolean openGame = gameBox.isSelected();
+        boolean openPlugin = pluginBox.isSelected();
+
+        License license = new License(userName, version);
+        license.setLicenseType(value);
+        license.setOpenGames(openGame);
+        license.setOpenPlugins(openPlugin);
+        return license;
     }
 
     /**

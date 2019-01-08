@@ -1,5 +1,8 @@
 package com.wanna.keygen.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +16,8 @@ import java.nio.file.Files;
  */
 @SuppressWarnings("ALL")
 public class KeyGenerate {
+
+    private static final Logger logger = LoggerFactory.getLogger(KeyGenerate.class);
 
     private static final String MXTPRO_NAME = "Custom.mxtpro";
 
@@ -33,7 +38,6 @@ public class KeyGenerate {
         // 生成 key 文件
         File keyFile = generateKeyFile(keyContent);
 
-
         File zipFile = new File(ZIP_NAME);
         String zipPath = zipFile.getAbsolutePath();
         String keyPath = keyFile.getAbsolutePath();
@@ -41,6 +45,7 @@ public class KeyGenerate {
         File zip7 = copy7z();
         String command = COMMAND.replace("{{EXE}}", zip7.getAbsolutePath())
                 .replace("{{ZIP}}", zipPath).replace("{{KEY}}", keyPath);
+        logger.info("执行的命令为: {} ", command);
         Process exec = Runtime.getRuntime().exec(command);
         exec.waitFor();
         // 重命名
@@ -49,6 +54,7 @@ public class KeyGenerate {
         // 删除生成的相关文件
         keyFile.delete();
         zip7.delete();
+        logger.info(MXTPRO_NAME + " 文件生成的路径为: {}", dest.getAbsolutePath());
     }
 
     /**
