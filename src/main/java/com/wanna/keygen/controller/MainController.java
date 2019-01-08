@@ -107,7 +107,7 @@ public class MainController {
             try {
                 KeyGenerate.generate(content);
             } catch (Exception e) {
-                System.out.println(e);
+                logger.error("生成注册文件出错,{}....", e);
                 Alert alert = createAlert("保存key出错,稍后请重试");
                 alert.showAndWait();
             }
@@ -146,7 +146,7 @@ public class MainController {
                     String file = new File("").getAbsolutePath();
                     Desktop.getDesktop().browse(new File(file).toURI());
                 } catch (IOException e) {
-                    logger.error("打开文件出错");
+                    logger.error("打开生成文件夹出错,{}.....", e);
                 }
             });
         }
