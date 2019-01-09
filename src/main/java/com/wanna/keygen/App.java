@@ -1,6 +1,8 @@
 package com.wanna.keygen;
 
+import com.wanna.keygen.controller.MainController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,6 +30,11 @@ public class App extends Application {
         primaryStage.getIcons().addAll(new Image("/static/logo.png"));
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(event -> {
+            MainController.executor.shutdownNow();
+            Platform.exit();
+            System.exit(-1);
+        });
         primaryStage.show();
         application = this;
     }

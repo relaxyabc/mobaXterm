@@ -9,11 +9,11 @@ import com.wanna.keygen.util.EncryptUtil;
 import com.wanna.keygen.util.KeyGenerate;
 import com.wanna.keygen.util.VariantBase64;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class MainController {
     @FXML
     private CheckBox pluginBox;
 
-    private static ExecutorService executor;
+    public static ExecutorService executor;
 
     static {
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
@@ -87,11 +87,15 @@ public class MainController {
     }
 
 
+    /**
+     * 检查版本是否合法
+     */
     private void checkVersionFormat() {
         String version = targetVersion.getText();
         if (!VERSION_MATCHER.matcher(version).find()) {
             Alert alert = createAlert("版本号格式为 [主版本号.次版本号], 如10.9");
             alert.showAndWait();
+            targetVersion.requestFocus();
         }
     }
 
@@ -99,7 +103,6 @@ public class MainController {
      * 生成注册文件
      */
     public void register() {
-
         String name = userName.getText();
         String version = targetVersion.getText();
         if (Objects.equals("", name.trim()) || Objects.equals("", version.trim())) {
@@ -163,10 +166,34 @@ public class MainController {
 
     /**
      * 打开超链接
+     *
+     * @param actionEvent event
      */
-    public void openHyperlink() {
+    public void openItemLink(ActionEvent actionEvent) {
+        Object source = actionEvent.getSource();
+        MenuItem item = (MenuItem) source;
+        openHyperlink(item.getUserData().toString());
+    }
+
+    /**
+     * 打开超链接
+     *
+     * @param actionEvent event
+     */
+    public void openHyperlink(ActionEvent actionEvent) {
+        Object source = actionEvent.getSource();
+        Hyperlink hyperlink = (Hyperlink) source;
+        openHyperlink(hyperlink.getText());
+    }
+
+    /**
+     * 打开超链接
+     *
+     * @param url url
+     */
+    public void openHyperlink(String url) {
         HostServicesDelegate hostServices = HostServicesFactory.getInstance(App.getInstance());
-        hostServices.showDocument("https://mobaxterm.mobatek.net/");
+        hostServices.showDocument(url);
     }
 
     /**
@@ -183,15 +210,6 @@ public class MainController {
                 }
             });
         }
-    }
-
-    /**
-     * 关闭
-     */
-    @SuppressWarnings("All")
-    public void close() {
-        executor.shutdownNow();
-        System.exit(-1);
     }
 
 }

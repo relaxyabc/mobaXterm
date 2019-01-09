@@ -16,6 +16,11 @@
                 <MenuItem text="注册" onAction="#register"/>
                 <MenuItem text="打开" onAction="#openPath"/>
             </Menu>
+            <Menu text="帮助">
+                <MenuItem text="Gitee" onAction="#openItemLink" userData="https://gitee.com/luckylo/mobaxterm.git"/>
+                <MenuItem text="GitHub" onAction="#openItemLink"
+                          userData="https://github.com/luckylocode/mobaXterm.git"/>
+            </Menu>
         </MenuBar>
 
     </top>
