@@ -1,5 +1,6 @@
-package com.wanna.keygen.util;
+package com.wanna.keygen.util.impl;
 
+import com.wanna.keygen.util.Generator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,31 +11,14 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-/**
- * @author wanna
- * @since 2019-01-02
- */
-@SuppressWarnings("ALL")
-public class KeyGenerate {
+public class SevenZipGenerator implements Generator {
 
-    private static final Logger logger = LoggerFactory.getLogger(KeyGenerate.class);
+    private static final Logger logger = LoggerFactory.getLogger(SevenZipGenerator.class);
 
-    private static final String MXTPRO_NAME = "Custom.mxtpro";
+    private static final String COMMAND = "%s a %s  %s";
 
-    private static final String ZIP_NAME = "Custom.zip";
-
-    private static final String ENTRY_NAME = "Pro.key";
-
-    private static final String COMMAND = "{{EXE}} a {{ZIP}}  {{KEY}}";
-
-
-    /**
-     * 生成 破解 文件
-     *
-     * @param keyContent key
-     * @throws IOException 文件生成失败
-     */
-    public static void generate(String keyContent) throws Exception {
+    @Override
+    public void generate(String keyContent) throws Exception {
         // 生成 key 文件
         File keyFile = generateKeyFile(keyContent);
 
@@ -43,18 +27,18 @@ public class KeyGenerate {
         String keyPath = keyFile.getAbsolutePath();
 
         File zip7 = copy7z();
-        String command = COMMAND.replace("{{EXE}}", zip7.getAbsolutePath())
-                .replace("{{ZIP}}", zipPath).replace("{{KEY}}", keyPath);
+        String command = String.format(COMMAND, zip7.getAbsolutePath(), zipPath, keyPath);
         logger.info("执行的命令为: {} ", command);
+
         Process exec = Runtime.getRuntime().exec(command);
         exec.waitFor();
         // 重命名
-        File dest = new File(MXTPRO_NAME);
+        File dest = new File(FILE_NAME);
         zipFile.renameTo(dest);
         // 删除生成的相关文件
         keyFile.delete();
         zip7.delete();
-        logger.info(MXTPRO_NAME + " 文件生成的路径为: {}", dest.getAbsolutePath());
+        logger.info(FILE_NAME + " 文件生成的路径为: {}", dest.getAbsolutePath());
     }
 
     /**
@@ -79,11 +63,10 @@ public class KeyGenerate {
      * @throws Exception Exception
      */
     private static File copy7z() throws Exception {
-        InputStream in = KeyGenerate.class.getResourceAsStream("/7z/7z.exe");
+        InputStream in = SevenZipGenerator.class.getResourceAsStream("/7z/7z.exe");
 
         File file = new File("7z.exe");
         Files.copy(in, file.toPath());
         return file;
     }
-
 }

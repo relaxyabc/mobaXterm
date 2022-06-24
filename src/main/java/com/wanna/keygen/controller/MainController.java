@@ -6,8 +6,9 @@ import com.wanna.keygen.App;
 import com.wanna.keygen.core.License;
 import com.wanna.keygen.core.LicenseType;
 import com.wanna.keygen.util.EncryptUtil;
-import com.wanna.keygen.util.KeyGenerate;
+import com.wanna.keygen.util.Generator;
 import com.wanna.keygen.util.VariantBase64;
+import com.wanna.keygen.util.impl.JavaGenerator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,6 +55,11 @@ public class MainController {
 
     public static ExecutorService executor;
 
+    /**
+     * Generator
+     */
+    private Generator generator;
+
     static {
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
         executor = new ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS,
@@ -65,6 +71,8 @@ public class MainController {
         initLicenseType();
         // 初始化 版本监听器
         initVersionListener();
+        // 初始化实现方式
+        generator = new JavaGenerator();
     }
 
     /**
@@ -120,7 +128,7 @@ public class MainController {
 
         executor.submit(() -> {
             try {
-                KeyGenerate.generate(content);
+                generator.generate(content);
             } catch (Exception e) {
                 logger.error("生成注册文件出错,{}....", e);
                 Alert alert = createAlert("保存key出错,稍后请重试");
