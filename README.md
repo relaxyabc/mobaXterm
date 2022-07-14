@@ -28,6 +28,17 @@
     现已提供 基于 Java 原生的 ZipOutputStream 生产的 Custom.mxtpro.
     详见: com.wanna.keygen.util.impl.JavaGenerator#generate
 
+### 
+    本仓库 Java 版本要求 Java 1.8 ,基于 JavaFX 开发 GUI;自从 Java 9 开始, 
+    JavaFX 从 JDK 中剔除,需要单独安装,为避免版本升级导致JDK(JRE)没有 JavaFX API 的问题,该工具用 Golang 重写.
+    
+    Golang 版本 见仓库 https://github.com/luckylocode/Moba-Xterm
+    
+    Golang 没有官方的 UI 库, 本仓库 选用 fyne 这个库开发, 使用 fyne-cross 交叉编译.
+    
+    原作者 GitHub Python 版地址为:
+    https://github.com/DoubleLabyrinth/MobaXterm-keygen.git
+
 #### Jar执行文件下载
 
 [下载](https://gitee.com/luckylo/mobaxterm/tags)
